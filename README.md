@@ -215,7 +215,7 @@ Bake the new character with its own prefix, then run **Create Crowd Setup** for 
 
 ## Credits
 
-The VAT baking approach, baker structure, debug renderer and shader are based on code shared by **Corrie Green** in the Unity livestream *"How to Use Vertex Animation Textures with ECS in Unity"* (Unity YouTube channel, July 2026). The ECS runtime, package structure and later changes were built on top of that.
+The VAT baking approach, baker structure, debug renderer and shader are based on code shared by **Corrie Green** in the Unity livestream *"[How to Use Vertex Animation Textures with ECS in Unity](https://www.youtube.com/watch?v=zEVp52Y_60Y)"* (Unity YouTube channel, July 2026). The ECS runtime, package structure and later changes were built on top of that.
 
 ## License
 
