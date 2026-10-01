@@ -14,8 +14,9 @@ namespace AimeeBelke.VATCrowd.Editor
         private string _savePath = "Assets/VATBaker/";
         private string _assetPrefix = "Character";
         private bool _correctRotation;
+        private VATClipData _lastBake;
 
-        [MenuItem("Tools/VAT Baker")]
+        [MenuItem("Tools/VAT/Baker", false, 1)]
         public static void Open()
         {
             GetWindow<VATBakerWindow>("VAT Baker").Show();
@@ -53,7 +54,16 @@ namespace AimeeBelke.VATCrowd.Editor
             {
                 AnimationClip[] clips = { _clipIdle, _clipWalk, _clipRun, _clipAttack };
                 string[] names = { "Idle", "Walk", "Run", "Attack" };
-                VATBaker.Bake(_smr, clips, names, _fps, _savePath, _correctRotation, _assetPrefix);
+                _lastBake = VATBaker.Bake(_smr, clips, names, _fps, _savePath, _correctRotation, _assetPrefix);
+            }
+
+            // Hand the fresh bake straight to the crowd setup
+            if (_lastBake != null)
+            {
+                EditorGUILayout.Space();
+                EditorGUILayout.HelpBox($"Last bake: {_lastBake.name}", MessageType.None);
+                if (GUILayout.Button("Set Up Crowd For This Bake →"))
+                    VATCrowdSetupWindow.Open(_lastBake);
             }
         }
     }

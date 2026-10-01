@@ -1,6 +1,6 @@
 {
   "name": "com.aimeebelke.vat-crowd",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "displayName": "VAT Crowd",
   "description": "Bake skinned-mesh animations into Vertex Animation Textures (VATs) and render thousands of animated characters with Entities (ECS) and GPU instancing in URP. Includes an editor baker, a VAT shader, a single-instance preview renderer, and ECS components, systems and authoring for spawning, wandering, animating and drawing crowds.",
   "unity": "6000.6",

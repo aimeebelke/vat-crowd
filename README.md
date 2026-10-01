@@ -2,7 +2,8 @@
 
 Render thousands of animated characters in Unity by baking skinned-mesh animations into **Vertex Animation Textures (VATs)** and driving them with **Entities (ECS)** and GPU instancing in URP.
 
-- **Editor baker** (`Tools → VAT Baker`) turns a `SkinnedMeshRenderer` plus four animation clips into a position texture, a static mesh and a clip-layout asset.
+- **Editor baker** (`Tools → VAT → Baker`) turns a `SkinnedMeshRenderer` plus four animation clips into a position texture, a static mesh and a clip-layout asset.
+- **One-click crowd setup** (`Tools → VAT → Create Crowd Setup`) builds the material, character prefab, SubScene, spawner and renderer from a bake.
 - **VAT shader** (`Custom/VAT`) moves each vertex on the GPU, blending between neighbouring frames so playback is smooth.
 - **ECS runtime**: spawning, a simple wandering AI, per-entity animation playback, and a renderer that draws up to 1,023 characters per draw call.
 - **Multiple character types**: each baked character gets its own renderer; entities are matched to renderers by their clip data, with no IDs to keep in sync.
@@ -26,15 +27,15 @@ Your project must already be using URP.
 **From Git (recommended).** In Unity open *Window → Package Manager → + → Add package from git URL…* and enter:
 
 ```
-https://github.com/<your-account>/com.aimeebelke.vat-crowd.git#v0.1.0
+https://github.com/<your-account>/com.aimeebelke.vat-crowd.git#v0.2.0
 ```
 
-Pinning a tag (`#v0.1.0`) keeps projects on a known version; drop it to track the default branch.
+Pinning a tag (`#v0.2.0`) keeps projects on a known version; drop it to track the default branch.
 
 **Or edit `Packages/manifest.json`:**
 
 ```json
-"com.aimeebelke.vat-crowd": "https://github.com/<your-account>/com.aimeebelke.vat-crowd.git#v0.1.0"
+"com.aimeebelke.vat-crowd": "https://github.com/<your-account>/com.aimeebelke.vat-crowd.git#v0.2.0"
 ```
 
 **Local development.** Clone the repo into a project's `Packages/` folder to use it as an embedded (editable) package, or use *Add package from disk…* and pick `package.json`.
@@ -113,7 +114,7 @@ Humanoid clips retarget onto any humanoid rig. The baker cancels horizontal root
 ### 3. Bake
 
 1. Drag the character model into any open scene (the baker samples it there and restores its pose afterwards).
-2. Open **Tools → VAT Baker**.
+2. Open **Tools → VAT → Baker**.
 3. Set **Source SMR** to the model's `SkinnedMeshRenderer`, and assign the four clips.
 4. **FPS**: 24 is a good default. Higher means smoother but taller textures.
 5. **Save Path**: where the outputs go, e.g. `Assets/VAT/`.
@@ -127,7 +128,32 @@ Outputs (for prefix `Soldier`):
 - `SoldierVAT_Mesh.asset`: static mesh with UV2
 - `Soldier_VATClipData.asset`: strip layout
 
-### 4. Create the material
+### 4. Create the crowd setup (quick way)
+
+Steps 5–7 below can be done for you:
+
+- After a bake, click **Set Up Crowd For This Bake →** in the baker window, or
+- open **Tools → VAT → Create Crowd Setup**, or
+- right-click the `…_VATClipData` asset → **VAT → Create Crowd Setup**.
+
+Pick the clip data, check the fields, and click **Create Crowd Setup**. The tool:
+
+| Piece | Behaviour |
+|---|---|
+| VAT mesh | Found next to the clip data by the baker's naming (`<Prefix>VAT_Mesh`). |
+| Material | Reuses a `Custom/VAT` material already using this bake; otherwise creates `<Prefix>_VAT.mat` (assign an albedo in the window). Always makes sure GPU instancing is on. |
+| Character prefab | Reuses a prefab whose `VATCharacterAuthoring` points at this clip data; otherwise creates `<Prefix>_Character.prefab` with `VATCharacterAuthoring` + `AgentAuthoring`. |
+| VAT Renderer | Updates the active scene's renderer for this clip data, or adds one. |
+| Spawner | Added to an existing SubScene you pick, or to a new `<Scene>_<Prefix>_SubScene`. The scene must be saved first; you'll be prompted. |
+| Camera, light, ground | Optional; each is only added if the scene doesn't have one. |
+
+Running it again for the same bake reuses everything instead of duplicating it. To add a second character type, run it with that character's clip data and choose the existing SubScene.
+
+**Right-click → VAT → Quick Crowd Setup (Defaults)** skips the window: 2,000 characters, radius 40, new SubScene.
+
+Save the scene and press **Play**. The rest of this section is what the tool does, if you'd rather set it up by hand.
+
+### 5. Create the material
 
 1. Create a material and set its shader to **Custom/VAT**.
 2. Assign the character's albedo texture to **Albedo Texture**, and optionally a **Colour Tint**.
@@ -135,11 +161,11 @@ Outputs (for prefix `Soldier`):
 
 You don't need to fill in *Position Texture* or *Texture Height*: the renderers set both from the clip data every frame.
 
-### 5. Check the bake (optional)
+### 6. Check the bake (optional)
 
 Create an empty GameObject, add **VAT Debug Renderer**, assign the mesh, material and clip data, and press Play. Use **Anim Strip** to switch clips. If it looks wrong here, fix the bake before moving on.
 
-### 6. Build the ECS scene
+### 7. Build the ECS scene
 
 1. **Character prefab.** Create an empty GameObject and add:
    - **VAT Character Authoring**: set *Clip Data* to the character's `VATClipData`.
@@ -155,7 +181,7 @@ The crowd exists only in Play mode: entities are spawned at runtime, so the Scen
 
 ### Adding another character type
 
-Repeat steps 3–6 for the new character with its own prefix, material and prefab: a second `VATRenderer` and a second `Spawner`. Each renderer draws only the entities whose `VATCharacterAuthoring` uses the same clip data.
+Bake the new character with its own prefix, then run **Create Crowd Setup** for its clip data (choosing your existing SubScene), or repeat steps 5–7 by hand: a second material, prefab, `VATRenderer` and `Spawner`. Each renderer draws only the entities whose `VATCharacterAuthoring` uses the same clip data.
 
 ---
 

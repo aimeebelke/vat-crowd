@@ -2,7 +2,8 @@
     "name": "AimeeBelke.VATCrowd.Editor",
     "rootNamespace": "AimeeBelke.VATCrowd.Editor",
     "references": [
-        "AimeeBelke.VATCrowd"
+        "AimeeBelke.VATCrowd",
+        "Unity.Scenes"
     ],
     "includePlatforms": [
         "Editor"

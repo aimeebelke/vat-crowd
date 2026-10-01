@@ -6,14 +6,15 @@ namespace AimeeBelke.VATCrowd.Editor
 {
     public static class VATBaker
     {
-        public static void Bake(SkinnedMeshRenderer smr, AnimationClip[] clips, string[] names, int fps, string savePath, bool correctRotation, string assetPrefix = "Character", bool showCompleteDialog = true)
+        // Returns the saved VATClipData, or null if the inputs were invalid
+        public static VATClipData Bake(SkinnedMeshRenderer smr, AnimationClip[] clips, string[] names, int fps, string savePath, bool correctRotation, string assetPrefix = "Character", bool showCompleteDialog = true)
         {
             #region 1 - Validate Inputs
 
             if (smr == null)
             {
                 EditorUtility.DisplayDialog("VAT Baker", "Assign a SkinnedMeshRenderer.", "OK");
-                return;
+                return null;
             }
 
             for (int i = 0; i < clips.Length; i++)
@@ -21,14 +22,14 @@ namespace AimeeBelke.VATCrowd.Editor
                 if (clips[i] == null)
                 {
                     EditorUtility.DisplayDialog("VAT Baker", $"Assign the '{names[i]}' clip.", "OK");
-                    return;
+                    return null;
                 }
             }
 
             if (fps <= 0)
             {
                 EditorUtility.DisplayDialog("VAT Baker", "FPS must be > 0.", "OK");
-                return;
+                return null;
             }
 
             // Check mesh has vertices
@@ -36,7 +37,7 @@ namespace AimeeBelke.VATCrowd.Editor
             if (vertexCount == 0)
             {
                 EditorUtility.DisplayDialog("VAT Baker", "Source mesh has no vertices.", "OK");
-                return;
+                return null;
             }
 
             #endregion
@@ -199,7 +200,7 @@ namespace AimeeBelke.VATCrowd.Editor
                     };
                     startFrame += clipFrameCounts[i];
                 }
-                SaveOrReplace(vatData, dataPath);
+                vatData = SaveOrReplace(vatData, dataPath);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
 
@@ -208,6 +209,8 @@ namespace AimeeBelke.VATCrowd.Editor
                     EditorUtility.DisplayDialog("VAT Baker", "Bake complete!\n\n" + $"Texture : {texPath}\n" + $"Mesh: {meshPath}\n" + $"Data: {dataPath}", "OK");
 
                 #endregion
+
+                return vatData;
             }
             finally
             {

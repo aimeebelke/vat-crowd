@@ -2,6 +2,17 @@
 
 All notable changes to this package are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-10-01
+
+### Added
+- **Create Crowd Setup** (`Tools → VAT → Create Crowd Setup`, or right-click a `VATClipData` → *VAT → Create Crowd Setup*): builds the material, character prefab, `VATRenderer`, and a spawner in a new or existing SubScene from one bake. Reuses existing assets for the same bake, and can add a camera, light and ground to an empty scene.
+- *VAT → Quick Crowd Setup (Defaults)* context action that skips the window.
+- "Set Up Crowd For This Bake" button in the baker window after a successful bake.
+
+### Changed
+- Baker menu moved to `Tools → VAT → Baker`.
+- `VATBaker.Bake` now returns the saved `VATClipData` (or null on invalid input).
+
 ## [0.1.0] - 2026-10-01
 
 ### Added
