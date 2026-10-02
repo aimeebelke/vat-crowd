@@ -10,6 +10,8 @@ Render thousands of animated characters in Unity by baking skinned-mesh animatio
 
 No bones are evaluated on the CPU at runtime, which is what lets the crowd scale.
 
+**Demo:** [watch the package in action](https://github.com/aimeebelke/vat-crowd/releases/download/v0.2.1/vat-crowd-demo.mp4) (attached to the [v0.2.1 release](https://github.com/aimeebelke/vat-crowd/releases/tag/v0.2.1)).
+
 ---
 
 ## Requirements
