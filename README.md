@@ -27,15 +27,15 @@ Your project must already be using URP.
 **From Git (recommended).** In Unity open *Window → Package Manager → + → Add package from git URL…* and enter:
 
 ```
-https://github.com/AimEnShoot/com.aimeebelke.vat-crowd.git#v0.2.0
+https://github.com/AimEnShoot/vat-crowd.git#v0.2.1
 ```
 
-Pinning a tag (`#v0.2.0`) keeps projects on a known version; drop it to track the default branch.
+Pinning a tag (`#v0.2.1`) keeps projects on a known version; drop it to track the default branch.
 
 **Or edit `Packages/manifest.json`:**
 
 ```json
-"com.aimeebelke.vat-crowd": "https://github.com/AimEnShoot/com.aimeebelke.vat-crowd.git#v0.2.0"
+"vat-crowd": "https://github.com/AimEnShoot/vat-crowd.git#v0.2.1"
 ```
 
 **Local development.** Clone the repo into a project's `Packages/` folder to use it as an embedded (editable) package, or use *Add package from disk…* and pick `package.json`.
